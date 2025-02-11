@@ -7,17 +7,14 @@
      update_cache: yes
     when: ansible_distribution == "Debian"
  
-  - name: add php support for apache
+  - name: add php support for apache and instal apache2
     apt:
-      name: libapache2-mod-php
-    when: ansible_distribution == "Debian"
-  
-  - name: install apache2 package
-    apt:
-      name: apache2
+      name: 
+        - libapache2-mod-php
+        - apache2
       state: latest
     when: ansible_distribution == "Debian"
-
+  
   - name: update repo index
     yum:
      update_cache: yes
@@ -25,11 +22,9 @@
  
   - name: add php support for apache
     yum:
-      name: php
-    when: ansible_distribution == "Rocky"
-  
-  - name: install apache2 package
-    yum:
-      name: httpd
+      name: 
+        - php
+        - httpd
       state: latest
     when: ansible_distribution == "Rocky"
+  

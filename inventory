@@ -1,4 +1,15 @@
+[app_servers]
 192.168.56.113
 192.168.56.115
+
+[db_server]
 192.168.56.117
+
+[proxy_server]
 192.168.56.119
+
+[proxy_container]
+192.168.56.120
+
+[workstations]
+172.31.84.129
