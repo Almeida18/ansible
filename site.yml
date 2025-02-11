@@ -1,0 +1,52 @@
+- name: My first play
+  hosts: all
+  tasks:
+
+  - name: install updates (Rocky)
+    tags: always
+    yum:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "Rocky"
+
+  - name: install updates (Debian)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+
+- hosts: app_servers
+  tasks:
+
+
+  - name: add php support for apache
+    tags: apache,apache2,debian
+    apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+
+- hosts: db_server
+  tasks:
+
+
+  - name: install mariadb 
+    tags: db,mariadb-server,Debian
+    apt:
+      name: mariadb-server
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+
+- hosts: proxy_server
+  tasks:
+
+
+  - name: install nginx
+    apt:
+      name: nginx
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Debian"
