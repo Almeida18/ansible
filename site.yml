@@ -9,16 +9,7 @@
       update_cache: yes
     when: ansible_distribution == "Rocky"
 
-  - name: change nginx default config
-    tags: nginx,rocky
-    lineinfile:
-      path: /etc/nginx/nginx.conf
-      regexp: '^worker_connections'
-      line: worker_connections 2048;
-    when: ansible_distribution == "Rocky"
-    register: nginx
-
-  - name: restart nginx
+  - name: restart the service
     tags: nginx,rocky
     service:
       name: nginx
@@ -84,6 +75,17 @@
       state: started
       enabled: yes
     when: ansible_distribution == "Debian"
+
+- hosts: all
+  tasks:
+    - name: create user karl
+      tags: always
+      user:
+        name: karl
+        groups: root
+
+
+
       #- hosts: workstations
       # tasks:
 

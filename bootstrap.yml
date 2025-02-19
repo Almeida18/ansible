@@ -1,0 +1,38 @@
+- name: Bootstrap play
+  hosts: all
+  tasks:
+
+  - name: update repo index (Debian)
+    apt:
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+
+  - name: install updates (Rocky)
+    tags: always
+    yum:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "Rocky"
+
+  - name: create user karl
+    tags: always
+    user:
+      name: karl
+      groups: root
+
+  - name: add ssh key for karl
+    tags: always
+    authorized_key:
+      user: karl
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIc6qt/uZE7r0/5/LYna+oVZXRNdUl1CmXm7YcDwg0l9 ansible"
+
+
+  - name: add sudoers file for karl
+    tags: always
+    copy: 
+      src: sudoer_karl
+      dest: /etc/sudoers.d/karl
+      owner: root
+      group: root
+      mode: 0440
+

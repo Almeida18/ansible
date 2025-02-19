@@ -11,5 +11,3 @@
 [proxy_container]
 192.168.56.120
 
-[workstations]
-172.31.84.129
