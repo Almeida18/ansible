@@ -1,0 +1,13 @@
+- name: install updates (Rocky)
+  tags: always
+  yum:
+    update_only: yes
+    update_cache: yes
+  when: ansible_distribution == "Rocky"
+ 
+- name: install nginx (Rocky)
+  tags: nginx
+  yum:
+    name: nginx
+    state: latest
+  when: ansible_distribution == "Rocky"

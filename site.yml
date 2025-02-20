@@ -1,103 +1,36 @@
-- name: My first play
+- name: Site Automation
   hosts: all
-  tasks:
+  pre_tasks:
+
+  - name: update repo index (Debian)
+    tags: always
+    apt:
+      update_cache: yes
+    when: ansible_distribution == "Debian"
 
   - name: install updates (Rocky)
     tags: always
     yum:
-      update_only: yes
       update_cache: yes
     when: ansible_distribution == "Rocky"
 
-  - name: restart the service
-    tags: nginx,rocky
-    service:
-      name: nginx
-      state: restarted
-      enabled: yes
-    when: nginx.changed
-
-  - name: install updates (Debian)
-    tags: always
-    apt:
-      upgrade: dist
-      update_cache: yes
-    when: ansible_distribution == "Debian"
+- hosts: all
+  roles: 
+    - base
 
 - hosts: app_servers
-  tasks:
-
-
-  - name: add php support for apache
-    tags: apache,apache2,debian
-    apt:
-      name:
-        - apache2
-        - libapache2-mod-php
-      update_cache: yes
-    when: ansible_distribution == "Debian"
-
-  - name: copy default html file for site
-    tags: apache,apache2,httpd
-    copy: 
-      src: default_site.html
-      dest: /var/www/html/index.html
-      owner: root
-      group: root
-      mode: 0644
+  roles:
+    - app_servers
 
 - hosts: db_server
-  tasks:
-
-
-  - name: install mariadb 
-    tags: db,mariadb-server,Debian
-    apt:
-      name: mariadb-server
-      update_cache: yes
-    when: ansible_distribution == "Debian"
+  roles:
+    - db_server
 
 - hosts: proxy_server
-  tasks:
+  roles:
+    - proxy_server
 
+- hosts: proxy_container
+  roles:
+    - proxy_container
 
-
-  - name: install nginx
-    apt:
-      name: nginx
-      state: latest
-      update_cache: yes
-    when: ansible_distribution == "Debian"
-
-  - name: manage nginx
-    service:
-      name: nginx
-      state: started
-      enabled: yes
-    when: ansible_distribution == "Debian"
-
-- hosts: all
-  tasks:
-    - name: create user karl
-      tags: always
-      user:
-        name: karl
-        groups: root
-
-
-
-      #- hosts: workstations
-      # tasks:
-
-      #- name: install unzip
-      #package:
-      # name: unzip
-
-      #- name: install terraform
-      #unarchive:
-      #  src: https://releases.hashicorp.com/terraform/1.10.5/terraform_1.10.5_linux_amd64.zip
-      # dest: /usr/local/bin
-      # remote_src: yes
-      # mode: 0755
-      # owner: root
-      # group: root

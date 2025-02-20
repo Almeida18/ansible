@@ -1,0 +1,4 @@
+- name: Update Repository Index
+  tags: always
+  apt:
+    update_cache: yes
