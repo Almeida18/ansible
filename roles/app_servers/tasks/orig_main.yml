@@ -1,11 +1,10 @@
 - name: add php support for apache
   tags: apache,apache2,debian
   apt:
-    update_cache: yes
     name:
-      - "{{ apache_package_name }}"
-      - "{{ php_package_name }}"
-    state: latest
+      - apache2
+      - libapache2-mod-php
+    update_cache: yes
   when: ansible_distribution == "Debian"
 
 - name: copy default html file for site

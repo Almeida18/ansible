@@ -1,13 +1,13 @@
 [app_servers]
-192.168.56.113
-192.168.56.115
+apps-server1
+apps-server2
 
 [db_server]
-192.168.56.117
+apps-server-db
 
 [proxy_server]
-192.168.56.119
+apps-server-proxy
 
 [proxy_container]
-192.168.56.120
+home-web-proxy
 
